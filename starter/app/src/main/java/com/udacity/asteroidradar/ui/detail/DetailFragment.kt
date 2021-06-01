@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.detail
+package com.udacity.asteroidradar.ui.detail
 
 
 import android.os.Bundle
@@ -25,6 +25,7 @@ class DetailFragment : Fragment() {
         }
 
         return binding.root
+
     }
 
     private fun displayAstronomicalUnitExplanationDialog() {
