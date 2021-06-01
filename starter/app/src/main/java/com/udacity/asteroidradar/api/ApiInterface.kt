@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.api
 
 import com.udacity.asteroidradar.model.Asteroid
+import com.udacity.asteroidradar.model.PictureOfDay
 import com.udacity.asteroidradar.utils.Constants
 import kotlinx.coroutines.Deferred
 import org.json.JSONObject
@@ -15,4 +16,9 @@ interface ApiInterface {
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String
     ): Deferred</*ArrayList<Asteroid>*/JSONObject>
+
+    @GET(Constants.PICTURE_OF_DAY)
+    fun getPictureOfTheDayAsync(
+        @Query("api_key") apiKey: String
+    ): Deferred<PictureOfDay>
 }

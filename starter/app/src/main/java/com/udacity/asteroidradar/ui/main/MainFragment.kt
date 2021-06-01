@@ -8,6 +8,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.model.Asteroid
+import com.udacity.asteroidradar.utils.showToast
 
 class MainFragment : Fragment() {
 
@@ -16,7 +18,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentMainBinding
-    private var mAdapter = AsteroidListAdapter()
+    private lateinit var mAdapter: AsteroidListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,6 +46,11 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(){
+        mAdapter = AsteroidListAdapter(object : AsteroidListAdapter.AsteroidClickListener {
+            override fun onItemClick(asteroidData: Asteroid) {
+                showToast("CodeName : ${asteroidData.codename}")
+            }
+        })
         binding.asteroidRecycler.run {
             layoutManager = GridLayoutManager(context, 2)
             adapter = mAdapter

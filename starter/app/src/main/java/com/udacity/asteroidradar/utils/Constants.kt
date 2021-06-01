@@ -10,4 +10,5 @@ object Constants {
 
     //URL Path
     const val FEED = "neo/rest/v1/feed"
+    const val PICTURE_OF_DAY = "planetary/apod"
 }
