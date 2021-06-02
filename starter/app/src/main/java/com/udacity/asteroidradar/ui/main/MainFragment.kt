@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
@@ -48,7 +49,8 @@ class MainFragment : Fragment() {
     private fun setUpRecyclerView(){
         mAdapter = AsteroidListAdapter(object : AsteroidListAdapter.AsteroidClickListener {
             override fun onItemClick(asteroidData: Asteroid) {
-                showToast("CodeName : ${asteroidData.codename}")
+//                showToast("CodeName : ${asteroidData.codename}")
+                findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroidData))
             }
         })
         binding.asteroidRecycler.run {
