@@ -15,7 +15,7 @@ interface ApiInterface {
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String
-    ): Deferred</*ArrayList<Asteroid>*/JSONObject>
+    ): Deferred<JSONObject>
 
     @GET(Constants.PICTURE_OF_DAY)
     fun getPictureOfTheDayAsync(

@@ -1,27 +1,27 @@
 package com.udacity.asteroidradar.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.api.DataProvider
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.request.FeedDataRequest
+import com.udacity.asteroidradar.database.AsteroidDatabaseDao
+import com.udacity.asteroidradar.database.toAsteroid
 import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.model.PictureOfDay
 import com.udacity.asteroidradar.utils.Status
+import com.udacity.asteroidradar.utils.getCurrentDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val dataSource: AsteroidDatabaseDao) : ViewModel() {
 
     private var asteroidJob: Job? = null
     private var pictureOfDayJob: Job? = null
 
-    private val _dummyAsteroids = MutableLiveData<List<Asteroid>>()
-    val dummyAsteroids: LiveData<List<Asteroid>>
-        get() = _dummyAsteroids
+    private val _asteroids = MutableLiveData<List<Asteroid>>()
+    val asteroids: LiveData<List<Asteroid>>
+        get() = _asteroids
 
     private val _pictureOfDay = MutableLiveData<PictureOfDay>()
     val pictureOfDay: LiveData<PictureOfDay>
@@ -35,6 +35,7 @@ class MainViewModel : ViewModel() {
 //        generateDummyAsteroidData()
         fetchAsteroidsData()
         fetchPictureOfTheDay()
+        getTodayAsteroidsDataFromDb()
     }
 
     private fun generateDummyAsteroidData() {
@@ -49,44 +50,53 @@ class MainViewModel : ViewModel() {
                 )
             )
         }
-        _dummyAsteroids.value = tempDummyAsteroids
+//        _dummyAsteroids.value = tempDummyAsteroids
     }
 
-    private fun fetchAsteroidsData(){
+    private fun fetchAsteroidsData() {
         asteroidJob?.cancel()
 
         asteroidJob = viewModelScope.launch(Dispatchers.IO) {
-            _loading.postValue(Status.LOADING)
             val dates = getNextSevenDaysFormattedDates()
 
             DataProvider.getAsteroidsData(
-                request = FeedDataRequest(startDate = dates[0], endDate = dates[dates.size-1]),
+                dataSource = dataSource,
+                request = FeedDataRequest(startDate = dates[0], endDate = dates[dates.size - 1]),
                 success = {
-                    _dummyAsteroids.postValue(it)
-                    _loading.postValue(Status.SUCCESS)
+                    getTodayAsteroidsDataFromDb()
                 },
-                error = {
-                    _loading.postValue(Status.ERROR)
-                }
+                error = {}
             )
 
         }
     }
 
-    private fun fetchPictureOfTheDay(){
+    private fun fetchPictureOfTheDay() {
         pictureOfDayJob?.cancel()
 
         pictureOfDayJob = viewModelScope.launch(Dispatchers.IO) {
             DataProvider.getPictureOfTheDay(
                 success = {
-                          _pictureOfDay.postValue(it)
+                    _pictureOfDay.postValue(it)
                 },
                 error = {}
             )
         }
     }
 
-    private fun clearJobs(){
+    fun getTodayAsteroidsDataFromDb() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _asteroids.postValue(dataSource.getTodayAsteroids(todayDate = getCurrentDay()).map { it.toAsteroid() })
+        }
+    }
+
+    fun getWeekAsteroidsDataFromDb() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _asteroids.postValue(dataSource.getWeekAsteroid(todayDate = getCurrentDay()).map { it.toAsteroid() })
+        }
+    }
+
+    private fun clearJobs() {
         asteroidJob?.cancel()
         pictureOfDayJob?.cancel()
     }
