@@ -9,6 +9,7 @@ import com.udacity.asteroidradar.utils.Constants
 import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Entity(tableName = AsteroidDb.TABLE_NAME)
 data class AsteroidDb(
@@ -27,28 +28,32 @@ data class AsteroidDb(
 }
 
 
-fun Asteroid.toAsteroidDb(): AsteroidDb{
-    return AsteroidDb(
-        id = id,
-        codename = codename,
-        absoluteMagnitude = absoluteMagnitude,
-        estimatedDiameter = estimatedDiameter,
-        relativeVelocity = relativeVelocity,
-        distanceFromEarth = distanceFromEarth,
-        isPotentiallyHazardous = isPotentiallyHazardous,
-        closeApproachDate = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).parse(closeApproachDate)!!
-    )
+fun ArrayList<Asteroid>.asDatabaseModel(): List<AsteroidDb>{
+    return map {
+        AsteroidDb(
+            id = it.id,
+            codename = it.codename,
+            absoluteMagnitude = it.absoluteMagnitude,
+            estimatedDiameter = it.estimatedDiameter,
+            relativeVelocity = it.relativeVelocity,
+            distanceFromEarth = it.distanceFromEarth,
+            isPotentiallyHazardous = it.isPotentiallyHazardous,
+            closeApproachDate = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).parse(it.closeApproachDate)!!
+        )
+    }
 }
 
-fun AsteroidDb.toAsteroid(): Asteroid{
-    return Asteroid(
-        id = id,
-        codename = codename,
-        absoluteMagnitude = absoluteMagnitude,
-        estimatedDiameter = estimatedDiameter,
-        relativeVelocity = relativeVelocity,
-        distanceFromEarth = distanceFromEarth,
-        isPotentiallyHazardous = isPotentiallyHazardous,
-        closeApproachDate = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).format(closeApproachDate)
-    )
+fun List<AsteroidDb>.asDomainModel(): List<Asteroid>{
+    return map {
+        Asteroid(
+            id = it.id,
+            codename = it.codename,
+            absoluteMagnitude = it.absoluteMagnitude,
+            estimatedDiameter = it.estimatedDiameter,
+            relativeVelocity = it.relativeVelocity,
+            distanceFromEarth = it.distanceFromEarth,
+            isPotentiallyHazardous = it.isPotentiallyHazardous,
+            closeApproachDate = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).format(it.closeApproachDate!!)
+        )
+    }
 }

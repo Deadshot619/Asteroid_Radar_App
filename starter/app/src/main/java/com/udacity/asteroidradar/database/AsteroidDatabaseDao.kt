@@ -16,11 +16,11 @@ interface AsteroidDatabaseDao {
     fun insertAll(asteroids: List<AsteroidDb>)
 
     @Query("SELECT * FROM ${AsteroidDb.TABLE_NAME} WHERE close_approach_date = :todayDate")
-    fun getTodayAsteroids(todayDate: Date): List<AsteroidDb>
+    fun getTodayAsteroids(todayDate: Date = getCurrentDay()): List<AsteroidDb>
 
     @Query("SELECT * FROM ${AsteroidDb.TABLE_NAME} WHERE close_approach_date >= :todayDate ORDER BY close_approach_date ASC")
-    fun getWeekAsteroid(todayDate: Date): List<AsteroidDb>
+    fun getWeekAsteroid(todayDate: Date = getCurrentDay()): List<AsteroidDb>
 
     @Query("DELETE FROM ${AsteroidDb.TABLE_NAME} WHERE close_approach_date < :todayDate")
-    suspend fun deleteOldData(todayDate: Date = getCurrentDay())
+    fun deleteOldData(todayDate: Date = getCurrentDay())
 }
