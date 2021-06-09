@@ -23,4 +23,7 @@ interface AsteroidDatabaseDao {
 
     @Query("DELETE FROM ${AsteroidDb.TABLE_NAME} WHERE close_approach_date < :todayDate")
     fun deleteOldData(todayDate: Date = getCurrentDay())
+
+    @Query("SELECT * FROM ${AsteroidDb.TABLE_NAME}")
+    fun getAllAsteroids(): List<AsteroidDb>
 }

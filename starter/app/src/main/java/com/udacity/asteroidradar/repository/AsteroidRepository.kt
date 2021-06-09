@@ -47,4 +47,10 @@ class AsteroidRepository(val dataSource: AsteroidDatabaseDao) {
             _asteroids.postValue(dataSource.getWeekAsteroid().asDomainModel())
         }
     }
+
+    suspend fun getAllAsteroidData(){
+        withContext(Dispatchers.IO){
+            _asteroids.postValue(dataSource.getAllAsteroids().asDomainModel())
+        }
+    }
 }

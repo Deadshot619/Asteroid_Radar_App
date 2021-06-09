@@ -60,4 +60,10 @@ class MainViewModel(dataSource: AsteroidDatabaseDao) : ViewModel() {
             repository.getWeekAsteroidData()
         }
     }
+
+    fun getAllAsteroidsDataFromDb() {
+        viewModelScope.launch {
+            repository.getAllAsteroidData()
+        }
+    }
 }

@@ -57,7 +57,8 @@ class MainFragment : Fragment() {
                 viewModel.getTodayAsteroidsDataFromDb()
                 true
             }
-            R.id.show_buy_menu -> {
+            R.id.show_buy_menu -> { //Saved Asteroids
+                viewModel.getAllAsteroidsDataFromDb()
                 true
             }
             else -> true
