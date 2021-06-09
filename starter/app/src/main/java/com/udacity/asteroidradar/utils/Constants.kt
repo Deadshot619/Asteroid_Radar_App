@@ -6,7 +6,8 @@ object Constants {
     const val BASE_URL = "https://api.nasa.gov/"
 
 //    API Key
-    const val API_KEY = "pMSxe69gKpDzvqeXjYB9bkdB0zHGb82WhsM2nTCv"
+    //TODO : Put your Api Key here
+    const val API_KEY = ""
 
     //URL Path
     const val FEED = "neo/rest/v1/feed"
