@@ -9,12 +9,12 @@ import java.util.*
 @SuppressLint("NewApi")
 class DateConverter {
     @TypeConverter
-    fun toDate(dateString: Long?): Date? {
-        return dateString?.let { Date(it) }
+    fun toDate(dateString: String?): Date? {
+        return dateString?.let { SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).parse(it) }
     }
 
     @TypeConverter
-    fun fromDate(date: Date?): Long? {
-        return date?.time
+    fun fromDate(date: Date?): String? {
+        return SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault()).format(date)
     }
 }
