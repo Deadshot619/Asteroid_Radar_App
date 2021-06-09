@@ -27,7 +27,7 @@
             tools:src="@drawable/wallpapers"
             android:scaleType="centerCrop"
             app:imageContentDescription="@{data.potentiallyHazardous}"
-            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintDimensionRatio="W,1:1.5"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,13 +49,34 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
             android:textColor="@color/default_text_color"
             android:background="@color/text_background"
             android:text="@{data.codename}"
+            android:textSize="@dimen/text_size_normal"
             tools:text="Asteroid"
             app:layout_constraintStart_toStartOf="@id/iv_asteroid"
             app:layout_constraintEnd_toEndOf="@id/iv_asteroid"
+            app:layout_constraintBottom_toTopOf="@id/tv_date"/>
+
+        <!--Asteroid title-->
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_extra_small"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:textColor="@color/default_text_color"
+            android:background="@color/text_background"
+            android:textSize="@dimen/text_size_small"
+            android:text="@{data.closeApproachDate}"
+            tools:text="6969-69-69"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="@id/tv_title"
             app:layout_constraintBottom_toBottomOf="@id/iv_asteroid"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
